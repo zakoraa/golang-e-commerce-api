@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/zakora/golang-e-commerce-api/internal/domain/user/entity"
+	"github.com/zakoraa/golang-e-commerce-api/internal/domain/user/entity"
 )
 
 type userRepo struct {

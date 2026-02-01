@@ -6,8 +6,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/zakoraa/golang-e-commerce-api/internal/user/domain/entity"
-	"github.com/zakoraa/golang-e-commerce-api/internal/user/domain/repository"
+	"github.com/zakoraa/golang-e-commerce-api/internal/domain/user/entity"
+	"github.com/zakoraa/golang-e-commerce-api/internal/domain/user/repository"
 	"github.com/zakoraa/golang-e-commerce-api/internal/utils"
 )
 

@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/zakoraa/e-commerce-api/internal/domain/user/entity"
+import "github.com/zakoraa/golang-e-commerce-api/internal/domain/user/entity"
 
 type RegisterRequest struct {
 	Email    string

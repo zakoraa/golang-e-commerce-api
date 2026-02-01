@@ -14,3 +14,13 @@ func New() *gin.Engine{
 
 	return r
 }
+
+func RegisterAuth(
+	r *gin.Engine,
+	handler *handler.AuthHandler,
+) {
+	auth := r.Group("/auth"){
+		auth.POST("/register", handler.Register)
+		auth.POST("/login", handler.Login)
+	}
+}
