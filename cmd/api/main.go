@@ -5,13 +5,13 @@ import (
 
 	"github.com/zakoraa/golang-e-commerce-api/internal/config"
 	"github.com/zakoraa/golang-e-commerce-api/internal/database"
-	"github.com/zakoraa/golang-e-commerce-api/internal/router"
 	"github.com/zakoraa/golang-e-commerce-api/internal/utils"
+	"github.com/zakoraa/golang-e-commerce-api/internal/app" 
 
 	"go.uber.org/zap"
 )
 
-func main(){
+func main() {
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal(err)
@@ -27,13 +27,10 @@ func main(){
 		cfg.DB.Password,
 		cfg.DB.Name,
 	)
-
 	db := database.NewPostgres(dsn)
-	_ = db
 
-	r := router.New()
+	app := app.NewApp(db)
 
 	logger.Info("server started", zap.String("port", cfg.AppPort))
-	r.Run(":" + cfg.AppPort)
-
+	app.Router.Run(":" + cfg.AppPort)
 }

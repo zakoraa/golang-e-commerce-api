@@ -9,7 +9,7 @@ import (
 
 type User struct {
 	ID uuid.UUID `gorm:"type:uuid;primaryKey"`
-	
+
 	Email    string `gorm:"uniqueIndex;not null"`
 	Password string `gorm:"not null"`
 
@@ -25,4 +25,7 @@ type User struct {
 	DeletedBy *uuid.UUID
 }
 
-func (u *User) BeforeCreate(tx any) error { u.ID = uuid.New() return nil }
+func (u *User) BeforeCreate(tx any) error {
+	u.ID = uuid.New()
+	return nil
+}

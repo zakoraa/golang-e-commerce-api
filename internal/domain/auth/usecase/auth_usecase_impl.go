@@ -29,7 +29,7 @@ func (u *authUsecase) Register (ctx context.Context, req RegisterRequest) error 
 	user := &entity.User {
 		Email: req.Email,
 		Password: string(hash),
-		Role: req.Role
+		Role: req.Role,
 	}
 
 	return u.userRepo.Create(ctx, user)
@@ -48,7 +48,7 @@ func (u *authUsecase) Login (ctx context.Context, req LoginRequest) (TokenRespon
 		return TokenResponse{}, errors.New("Invalid credentials")
 	}
 
-	access, refresh := u.jwt.Generate(user.ID.String(), user.Role)
+	access, refresh := u.jwt.Generate(user.ID.String(), string(user.Role))
 
 	return TokenResponse{
 		AccessToken: access,
