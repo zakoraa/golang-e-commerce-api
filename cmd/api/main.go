@@ -2,23 +2,38 @@ package main
 
 import (
 	"log"
-	
-	"github.com/gin-gonic/gin"
+
 	"github.com/zakoraa/golang-e-commerce-api/internal/config"
+	"github.com/zakoraa/golang-e-commerce-api/internal/database"
+	"github.com/zakoraa/golang-e-commerce-api/internal/router"
+	"github.com/zakoraa/golang-e-commerce-api/internal/utils"
+
+	"go.uber.org/zap"
 )
 
-func main (){
+func main(){
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	r := gin.Default()
+	logger := utils.NewLoger()
+	defer logger.Sync()
 
-	r.GET("/health", func(c *gin.Context){
-		c.JSON(200, gin.H{"status": "ok"})
-	})
+	dsn := database.BuildDSN(
+		cfg.DB.Host,
+		cfg.DB.Port,
+		cfg.DB.User,
+		cfg.DB.Password,
+		cfg.DB.Name,
+	)
 
-	log.Println("service running on port", cfg.AppPort)
+	db := database.NewPostgres(dsn)
+	_ = db
+
+	r := router.New()
+
+	logger.Info("server started", zap.String("port", cfg.AppPort))
 	r.Run(":" + cfg.AppPort)
+
 }
