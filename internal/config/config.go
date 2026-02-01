@@ -16,6 +16,7 @@ type DBConfig struct {
 	User string
 	Password string
 	Name string
+	Url string
 }
 
 type RedisConfig struct {
@@ -41,6 +42,7 @@ func Load() (*Config, error) {
 			Host: viper.GetString("DB_HOST"),
 			Port: viper.GetString("DB_PORT"),
 			User: viper.GetString("DB_USER"),
+			Url: viper.GetString("DB_URL"),
 			Password: viper.GetString("DB_PASSWORD"),
 			Name: viper.GetString("DB_NAME"),
 		},

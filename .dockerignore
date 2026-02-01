@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+
+# Binaries & build output
+bin/
+build/
+out/
+
+# Go build cache
+**/*.exe
+**/*.exe~
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.test
+
+# Editor & OS files
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Vendor (kalau pakai Go modules default, ini boleh di-ignore)
+vendor/

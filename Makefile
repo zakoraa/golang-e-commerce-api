@@ -1,3 +1,6 @@
+#!make
+include .env
+
 APP_NAME := e-commerce-api
 MAIN_PATH := cmd/api/main.go
 
@@ -35,20 +38,31 @@ clean:
 	rm -rf bin
 
 migrate-up:
-	docker compose run --rm api migrate \
-		-path migrations \
-		-database "$$DATABASE_URL" up
+	docker run --rm \
+	  --network golang-e-commerce-api_default \
+	  -v $(PWD)/migrations:/migrations \
+	  migrate/migrate \
+	  -path /migrations \
+	  -database "$(DB_URL)" \
+	  up
 
 migrate-down:
-	docker compose run --rm api migrate \
-		-path migrations \
-		-database "$$DATABASE_URL" down
+	docker run --rm \
+	  --network golang-e-commerce-api_default \
+	  -v $(PWD)/migrations:/migrations \
+	  migrate/migrate \
+	  -path /migrations \
+	  -database "$(DB_URL)" \
+	  down
 
 docker-up:
 	docker compose up --build -d
 
 docker-down:
-	docker compose down
+	docker compose down -v
+
+psql:
+	docker compose exec db psql -U postgres -d e_commerce_db
 
 logs:
 	docker compose logs -f api
