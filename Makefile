@@ -1,7 +1,7 @@
 #!make
 include .env
 
-APP_NAME := e-commerce-api
+APP_NAME := golang-e-commerce-api
 MAIN_PATH := cmd/api/main.go
 
 .PHONY: help run build test tidy lint clean migrate-up migrate-down docker-up docker-down logs
@@ -55,8 +55,11 @@ migrate-down:
 	  -database "$(DB_URL)" \
 	  down
 
-docker-up:
-	docker compose up --build -d
+dev:
+	docker compose up --build
+
+prod:
+	docker compose -f docker-compose.prod.yml up --build
 
 docker-down:
 	docker compose down -v

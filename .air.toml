@@ -1,0 +1,13 @@
+root = "."
+
+tmp_dir = "tmp"
+
+[build]
+cmd = "go build -o ./tmp/app ./cmd/api/main.go"
+entrypoint = "./tmp/app"
+
+include_ext = ["go"]
+exclude_dir = ["vendor", "tmp", "migrations"]
+
+[log]
+time = true

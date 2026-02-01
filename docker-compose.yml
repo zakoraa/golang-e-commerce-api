@@ -2,18 +2,17 @@ services:
   api:
     build:
       context: .
-      dockerfile: docker/DockerFile
+      dockerfile: docker/Dockerfile.dev
     ports:
       - "8080:8080"
     env_file:
       - .env
+    volumes:
+      - .:/app 
     depends_on:
       - db
       - redis
     working_dir: /app
-    volumes:
-      - .:/app
-    command: sleep infinity
 
   db:
     image: postgres:15

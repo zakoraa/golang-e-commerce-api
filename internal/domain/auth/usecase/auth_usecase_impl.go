@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
-
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/zakoraa/golang-e-commerce-api/internal/domain/user/entity"
@@ -27,6 +27,7 @@ func (u *authUsecase) Register (ctx context.Context, req RegisterRequest) error 
 	)
 
 	user := &entity.User {
+		ID: uuid.New(),
 		Email: req.Email,
 		Password: string(hash),
 		Role: req.Role,
