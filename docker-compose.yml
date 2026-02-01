@@ -1,25 +1,29 @@
-version: "3.9"
-
-services: 
+services:
   api:
-    build: "./docker"
+    build:
+      context: ./docker
+      dockerfile: DockerFile
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     depends_on:
       - db
       - redis
-    env_file:
-      - .env
-  
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sleep infinity
+
   db:
     image: postgres:15
-    environment:
-      POSTGRES_DB: e_commerce_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports: 
-      - "5432:5432"
-    redis: 
-      image: redis:7
-      ports:
-        - "6379:6379"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+
+volumes:
+  pgdata:
