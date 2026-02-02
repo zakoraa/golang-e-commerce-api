@@ -9,11 +9,10 @@ type RegisterRequest struct {
 }
 
 type LoginRequest struct {
-	Email string
-	Password string
+	Email string 
+	Password string 
 }
 
 type TokenResponse struct {
-	AccessToken string
-	RefreshToken string
+	AccessToken string `json:"accessToken"`
 }

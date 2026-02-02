@@ -19,22 +19,14 @@ func NewJWTManagerFromEnv() *JWTManager {
 	return &JWTManager{secret}
 }
 
-func (j *JWTManager) Generate(userID, role string) (string, string) {
-	accessClaims := jwt.MapClaims{
+func (j *JWTManager) GenerateAccessToken(userID, role string) (string, error) {
+	claims := jwt.MapClaims{
 		"sub":  userID,
 		"role": role,
 		"exp":  time.Now().Add(15 * time.Minute).Unix(),
+		"iat":  time.Now().Unix(),
 	}
 
-	refreshClaims := jwt.MapClaims{
-		"sub": userID,
-		"exp": time.Now().Add(7 * 24 * time.Hour).Unix(),
-	}
-
-	accessToken, _ := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims).
+	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).
 		SignedString([]byte(j.secret))
-	refreshToken, _ := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).
-		SignedString([]byte(j.secret))
-
-	return accessToken, refreshToken
 }

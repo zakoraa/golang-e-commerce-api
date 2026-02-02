@@ -65,7 +65,10 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.authUC.Login(c.Request.Context(), req)
+	token, sessionID, err := h.authUC.Login(
+		c.Request.Context(),
+		req,
+	)
 	if err != nil {
 		logger.LogError("LOGIN_USER", err)
 		response.Error(
@@ -77,7 +80,18 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	logger.LogSuccess("LOGIN_USER", req.Email)
+	c.SetCookie(
+		"session_id",
+		sessionID,
+		7*24*60*60, 
+		"/",
+		"",
+		true,  
+		true,  
+	)
+
+	logger.LogSuccess("LOGIN_USER token: ", token)
+	logger.LogSuccess("LOGIN_USER sessionID: ", sessionID)
 	response.Success(
 		c,
 		token,

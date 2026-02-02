@@ -58,6 +58,8 @@ migrate-down:
 dev:
 	docker compose up --build
 
+# dev:
+# 	docker compose build --no-cache api
 prod:
 	docker compose -f docker-compose.prod.yml up --build
 
