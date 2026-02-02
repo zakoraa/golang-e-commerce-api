@@ -10,7 +10,6 @@ type Config struct {
 	AppName string
 	AppPort string
 	DB      DBConfig
-	Redis   RedisConfig
 	JWT     JWTConfig
 }
 
@@ -21,10 +20,6 @@ type DBConfig struct {
 	Password string
 	Name     string
 	URL      string
-}
-
-type RedisConfig struct {
-	Addr string
 }
 
 type JWTConfig struct {
@@ -39,16 +34,12 @@ func Load() (*Config, error) {
 		AppPort: viper.GetString("APP_PORT"),
 
 		DB: DBConfig{
-			Host:     viper.GetString("DB_HOST"),
-			Port:     viper.GetString("DB_PORT"),
-			User:     viper.GetString("DB_USER"),
+			Host: viper.GetString("DB_HOST"),
+			Port: viper.GetString("DB_PORT"),
+			User: viper.GetString("DB_USER"),
 			Password: viper.GetString("DB_PASSWORD"),
-			Name:     viper.GetString("DB_NAME"),
-			URL:      viper.GetString("DB_URL"),
-		},
-
-		Redis: RedisConfig{
-			Addr: viper.GetString("REDIS_ADDR"),
+			Name: viper.GetString("DB_NAME"),
+			URL: viper.GetString("DB_URL"),
 		},
 
 		JWT: JWTConfig{

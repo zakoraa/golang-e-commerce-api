@@ -4,10 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	userRepo "github.com/zakoraa/golang-e-commerce-api/internal/database"
-	sessionRepo "github.com/zakoraa/golang-e-commerce-api/internal/cache"
+	repo "github.com/zakoraa/golang-e-commerce-api/internal/database"
 	authUsecase "github.com/zakoraa/golang-e-commerce-api/internal/domain/auth/usecase"
-
 	"github.com/zakoraa/golang-e-commerce-api/internal/handler"
 	"github.com/zakoraa/golang-e-commerce-api/internal/router"
 	"github.com/zakoraa/golang-e-commerce-api/internal/utils"
@@ -18,15 +16,14 @@ type App struct {
 }
 
 func NewApp(db *gorm.DB) *App {
-	userRepository := userRepo.NewUserRepository(db)
-	redisClient := utils.NewRedisClient()
-	sessionRepository := sessionRepo.NewSessionRepository(redisClient)
+	userRepository := repo.NewUserRepository(db)
+	refreshTokenRepository := repo.NewRefreshTokenRepository(db)
 
 	jwtManager := utils.NewJWTManagerFromEnv()
 
 	authUC := authUsecase.NewAuthUsecase(
 		userRepository,
-		sessionRepository,
+		refreshTokenRepository,
 		jwtManager,
 	)
 

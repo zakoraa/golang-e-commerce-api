@@ -55,47 +55,41 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	var req usecase.LoginRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		logger.LogError("LOGIN_USER", err)
-		response.Error(
-			c,
-			"invalid request body",
-			http.StatusBadRequest,
-			"INVALID_REQUEST",
-		)
+		response.Error(c, "invalid request", http.StatusBadRequest, "INVALID_REQUEST")
 		return
 	}
 
-	token, sessionID, err := h.authUC.Login(
-		c.Request.Context(),
-		req,
-	)
+	token, refreshToken, err := h.authUC.Login(c.Request.Context(), req)
 	if err != nil {
-		logger.LogError("LOGIN_USER", err)
-		response.Error(
-			c,
-			"invalid credentials",
-			http.StatusUnauthorized,
-			"INVALID_CREDENTIALS",
-		)
+		response.Error(c, "invalid credentials", http.StatusUnauthorized, "INVALID_CREDENTIALS")
 		return
 	}
 
 	c.SetCookie(
-		"session_id",
-		sessionID,
-		7*24*60*60, 
+		"refresh_token",
+		refreshToken,
+		7*24*60*60,
 		"/",
 		"",
-		true,  
-		true,  
+		false,
+		true,
 	)
 
-	logger.LogSuccess("LOGIN_USER token: ", token)
-	logger.LogSuccess("LOGIN_USER sessionID: ", sessionID)
-	response.Success(
-		c,
-		token,
-		"login success",
-		http.StatusOK,
-	)
+	response.Success(c, token, "login success", http.StatusOK)
+}
+
+func (h *AuthHandler) Refresh(c *gin.Context) {
+	refreshToken, err := c.Cookie("refresh_token")
+	if err != nil {
+		response.Error(c, "unauthorized", http.StatusUnauthorized, "NO_REFRESH_TOKEN")
+		return
+	}
+
+	token, err := h.authUC.Refresh(c.Request.Context(), refreshToken)
+	if err != nil {
+		response.Error(c, "unauthorized", http.StatusUnauthorized, "INVALID_REFRESH_TOKEN")
+		return
+	}
+
+	response.Success(c, token, "token refreshed", http.StatusOK)
 }

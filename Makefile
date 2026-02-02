@@ -64,7 +64,10 @@ prod:
 	docker compose -f docker-compose.prod.yml up --build
 
 docker-down:
-	docker compose down -v
+	docker compose down
+
+docker-up:
+	docker compose up -d
 
 psql:
 	docker compose exec db psql -U postgres -d e_commerce_db
