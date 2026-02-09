@@ -17,11 +17,11 @@ func Auth(secret string) gin.HandlerFunc {
 			return
 		}
 
-		tokenStr := string.TrimPrefix(header, "Bearer ")
+		tokenStr := strings.TrimPrefix(header, "Bearer ")
 
-		token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (any, error)){
+		token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (any, error) {
 			return []byte(secret), nil
-		}
+		})
 
 		if err != nil || !token.Valid {
 			c.AbortWithStatus(http.StatusUnauthorized)
